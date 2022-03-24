@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-exercises',
@@ -10,7 +11,11 @@ export class ExercisesPage implements OnInit {
   public tempDate2: Date = new Date(2023, 7, 1);
   public tempDate3: Date = new Date(2021, 4, 10);
 
-  constructor() {}
+  constructor(private readonly router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {}
+
+  public addExercise(): void {
+    this.router.navigate(['/home/add']);
+  }
 }

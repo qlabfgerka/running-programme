@@ -6,12 +6,17 @@ import { ExercisesPage } from './exercises.page';
 const routes: Routes = [
   {
     path: '',
-    component: ExercisesPage
+    component: ExercisesPage,
   },
   {
     path: 'add',
-    loadChildren: () => import('./add/add.module').then( m => m.AddPageModule)
-  }
+    loadChildren: () => import('./add/add.module').then((m) => m.AddPageModule),
+  },
+  {
+    path: 'view/:id',
+    loadChildren: () =>
+      import('./view/view.module').then((m) => m.ViewPageModule),
+  },
 ];
 
 @NgModule({
