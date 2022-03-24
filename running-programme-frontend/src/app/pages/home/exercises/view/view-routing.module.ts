@@ -6,8 +6,13 @@ import { ViewPage } from './view.page';
 const routes: Routes = [
   {
     path: '',
-    component: ViewPage
-  }
+    component: ViewPage,
+  },
+  {
+    path: 'progress',
+    loadChildren: () =>
+      import('./progress/progress.module').then((m) => m.ProgressPageModule),
+  },
 ];
 
 @NgModule({

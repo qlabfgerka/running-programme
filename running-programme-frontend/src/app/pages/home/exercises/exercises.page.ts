@@ -18,4 +18,8 @@ export class ExercisesPage implements OnInit {
   public addExercise(): void {
     this.router.navigate(['/home/add']);
   }
+
+  public openExercise(): void {
+    this.router.navigate(['/home/view/temp']);
+  }
 }
