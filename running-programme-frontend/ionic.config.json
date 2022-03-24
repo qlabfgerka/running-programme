@@ -1,0 +1,7 @@
+{
+  "name": "running-programme-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
