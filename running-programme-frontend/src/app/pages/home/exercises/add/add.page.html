@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Exercise</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="flexbox">
+    <ion-text color="secondary">
+      <h1 class="center-text">Create an exercise</h1>
+    </ion-text>
+    <form
+      [formGroup]="addExerciseForm"
+      (ngSubmit)="addExercise()"
+      *ngIf="this.addExerciseForm"
+    >
+      <ion-item>
+        <ion-label position="floating">Exercise name</ion-label>
+        <ion-input formControlName="name" type="text"></ion-input>
+      </ion-item>
+      <span
+        class="error"
+        *ngIf="errorControl.name.touched && errorControl.name.errors?.required"
+      >
+        Name is required.
+      </span>
+
+      <ion-item>
+        <ion-label position="floating">Exercise frequency</ion-label>
+        <ion-input formControlName="frequency" type="text"></ion-input>
+      </ion-item>
+      <span
+        class="error"
+        *ngIf="errorControl.frequency.touched && errorControl.frequency.errors?.required"
+      >
+        Exercise frequency is required.
+      </span>
+
+      <ion-item>
+        <ion-label position="floating">Current exercise time (mm:ss)</ion-label>
+        <div class="aside">
+          <ion-input formControlName="currentMinutes" type="number"></ion-input>
+          <ion-input formControlName="currentSeconds" type="number"></ion-input>
+        </div>
+      </ion-item>
+      <span
+        class="error"
+        *ngIf="errorControl.currentMinutes.touched && errorControl.currentMinutes.errors?.required 
+        || errorControl.currentSeconds.touched && errorControl.currentSeconds.errors?.required "
+      >
+        Current time is required.
+      </span>
+
+      <ion-item>
+        <ion-label position="floating">Exercise goal (mm:ss)</ion-label>
+        <div class="aside">
+          <ion-input formControlName="goalMinutes" type="number"></ion-input>
+          <ion-input formControlName="goalSeconds" type="number"></ion-input>
+        </div>
+      </ion-item>
+      <span
+        class="error"
+        *ngIf="errorControl.goalMinutes.touched && errorControl.goalMinutes.errors?.required 
+        || errorControl.goalSeconds.touched && errorControl.goalSeconds.errors?.required"
+      >
+        Goal time is required.
+      </span>
+
+      <ion-item>
+        <ion-button slot="start" (click)="openDatePicker()">
+          Goal date
+        </ion-button>
+        <p slot="end">{{ tempDate | date: 'longDate' }}</p>
+      </ion-item>
+      <span
+        class="error"
+        *ngIf="errorControl.goalDate.touched && errorControl.goalDate.errors?.required"
+      >
+        Goal date is required.
+      </span>
+
+      <div class="break"></div>
+
+      <div class="center-text">
+        <ion-button
+          color="light"
+          type="submit"
+          [disabled]="!this.addExerciseForm.valid"
+          >ADD EXERCISE</ion-button
+        >
+      </div>
+    </form>
+  </div>
+</ion-content>

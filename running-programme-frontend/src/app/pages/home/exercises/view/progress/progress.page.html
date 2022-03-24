@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>PROGRESS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="flexbox">
+    <ion-text color="secondary">
+      <h1 class="center-text">
+        Currently running <ion-text color="success">6km/h</ion-text>
+        <br />
+        Keep up the great pace!
+      </h1>
+    </ion-text>
+    <ion-button color="success" (click)="scanHeartbeat()"
+      >SCAN FOR HEARTBEAT</ion-button
+    >
+  </div>
+</ion-content>
