@@ -16,10 +16,10 @@ export class ExercisesPage implements OnInit {
   ngOnInit(): void {}
 
   public addExercise(): void {
-    this.router.navigate(['/home/add']);
+    this.router.navigate(['/add']);
   }
 
   public openExercise(): void {
-    this.router.navigate(['/home/view/temp']);
+    this.router.navigate(['/view/temp']);
   }
 }
