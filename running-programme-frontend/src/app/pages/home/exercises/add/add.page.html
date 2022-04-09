@@ -73,12 +73,9 @@
         <ion-button slot="start" (click)="openDatePicker()">
           Goal date
         </ion-button>
-        <p slot="end">{{ tempDate | date: 'longDate' }}</p>
+        <p slot="end">{{ date | date: 'longDate' }}</p>
       </ion-item>
-      <span
-        class="error"
-        *ngIf="errorControl.goalDate.touched && errorControl.goalDate.errors?.required"
-      >
+      <span class="error" *ngIf="!this.date && this.dateOpened">
         Goal date is required.
       </span>
 
