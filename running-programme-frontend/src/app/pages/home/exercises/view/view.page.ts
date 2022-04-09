@@ -14,6 +14,6 @@ export class ViewPage implements OnInit {
   ngOnInit(): void {}
 
   public startExercise(): void {
-    this.router.navigate(['home/view/temp/progress']);
+    this.router.navigate(['view/temp/progress']);
   }
 }
