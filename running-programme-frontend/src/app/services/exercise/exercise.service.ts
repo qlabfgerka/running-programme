@@ -15,6 +15,10 @@ export class ExerciseService {
     return this.httpClient.get<Array<ExerciseDTO>>(`${this.hostname}/exercise`);
   }
 
+  public getExercise(id: string): Observable<ExerciseDTO> {
+    return this.httpClient.get<ExerciseDTO>(`${this.hostname}/exercise/${id}`);
+  }
+
   public addExercise(exercise: ExerciseDTO): Observable<ExerciseDTO> {
     return this.httpClient.post<ExerciseDTO>(
       `${this.hostname}/exercise`,

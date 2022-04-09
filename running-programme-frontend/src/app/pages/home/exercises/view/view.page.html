@@ -8,15 +8,32 @@
 </ion-header>
 
 <ion-content>
-  <div class="flexbox">
+  <div class="flexbox" *ngIf="!isLoading">
     <ion-text color="secondary">
-      <h1 class="center-text">1000m run exercise</h1>
+      <h1 class="center-text">{{exercise.name}}</h1>
     </ion-text>
 
-    Your goal is to train<ion-text color="primary">&nbsp;5 times</ion-text> per
-    week and reach your goal by
-    <ion-text color="primary">{{tempDate | date:'longDate'}}</ion-text>.
+    <div class="flexbox">
+      Currently achieving
+      <ion-text color="primary">
+        &nbsp;{{exercise.currentMinutes}}m
+        {{exercise.currentSeconds}}s.</ion-text
+      >
 
+      Expected to hit goal of
+      <ion-text color="success">
+        &nbsp;{{exercise.goalMinutes}}m {{exercise.goalSeconds}}</ion-text
+      >
+      &nbsp;by&nbsp;
+      <ion-text color="primary">{{ exercise.goalDate| date}}.&nbsp;</ion-text>
+
+      Your goal is to train<ion-text color="primary"
+        >&nbsp;{{exercise.frequency}} times</ion-text
+      >
+      per week and reach your goal by
+      <ion-text color="primary">{{exercise.goalDate| date:'longDate'}}</ion-text
+      >.
+    </div>
     <ion-item-divider></ion-item-divider>
 
     <div class="break"></div>
@@ -25,15 +42,15 @@
     </ion-text>
     <ion-list>
       <ion-item>
-        <ion-label>{{tempDate | date:'longDate'}}</ion-label>
+        <ion-label>{{exercise.goalDate | date:'longDate'}}</ion-label>
         <p>Goal: <ion-text color="secondary">1m 33s</ion-text></p>
       </ion-item>
       <ion-item>
-        <ion-label>{{tempDate | date:'longDate'}}</ion-label>
+        <ion-label>{{exercise.goalDate | date:'longDate'}}</ion-label>
         <p>Goal: <ion-text color="secondary">1m 30s</ion-text></p>
       </ion-item>
       <ion-item>
-        <ion-label>{{tempDate | date:'longDate'}}</ion-label>
+        <ion-label>{{exercise.goalDate | date:'longDate'}}</ion-label>
         <p>Goal: <ion-text color="secondary">1m 24s</ion-text></p>
       </ion-item>
     </ion-list>

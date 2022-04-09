@@ -5,6 +5,7 @@ import {
   Request,
   Post,
   Body,
+  Param,
 } from '@nestjs/common';
 import { Exercise } from 'src/models/exercise/exercise.model';
 import { JwtAuthGuard } from '../user/auth/guards/jwt-auth.guard';
@@ -18,6 +19,12 @@ export class ExerciseController {
   @Get()
   public async getExercises(@Request() req: any): Promise<Array<Exercise>> {
     return await this.exerciseService.getExercises(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  public async getExercise(@Param('id') id: string): Promise<Exercise> {
+    return await this.exerciseService.getExercise(id);
   }
 
   @UseGuards(JwtAuthGuard)

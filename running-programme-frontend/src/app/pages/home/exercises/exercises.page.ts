@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { ExerciseDTO } from 'src/app/models/exercise/exercise.model';
+import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 
 @Component({
   selector: 'app-exercises',
@@ -7,19 +10,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./exercises.page.scss'],
 })
 export class ExercisesPage implements OnInit {
-  public tempDate1: Date = new Date(2022, 5, 16);
-  public tempDate2: Date = new Date(2023, 7, 1);
-  public tempDate3: Date = new Date(2021, 4, 10);
+  public exercises: Array<ExerciseDTO>;
+  public isLoading: boolean;
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly exerciseService: ExerciseService,
+    private readonly router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.refresh();
+  }
 
   public addExercise(): void {
     this.router.navigate(['/add']);
   }
 
-  public openExercise(): void {
-    this.router.navigate(['/view/temp']);
+  public openExercise(id: string): void {
+    this.router.navigate([`/view/${id}`]);
+  }
+
+  private refresh(): void {
+    this.isLoading = true;
+    this.exerciseService
+      .getExercises()
+      .pipe(take(1))
+      .subscribe((exercises: Array<ExerciseDTO>) => {
+        this.exercises = exercises;
+        this.isLoading = false;
+      });
   }
 }

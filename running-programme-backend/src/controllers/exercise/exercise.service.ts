@@ -25,4 +25,9 @@ export class ExerciseService {
     const exercises = await this.exerciseModel.find({ user: id });
     return await this.dtoFunctions.exercisesToDTO(exercises);
   }
+
+  public async getExercise(id: string): Promise<Exercise> {
+    const exercise = await this.exerciseModel.findById(id);
+    return await this.dtoFunctions.exerciseToDTO(exercise);
+  }
 }
