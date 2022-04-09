@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { take } from 'rxjs/operators';
+import { ExerciseDTO } from 'src/app/models/exercise/exercise.model';
+import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 import { TimeDialogComponent } from 'src/app/shared/components/dialogs/time-dialog/time-dialog.component';
 
 @Component({
@@ -10,11 +14,14 @@ import { TimeDialogComponent } from 'src/app/shared/components/dialogs/time-dial
 })
 export class AddPage implements OnInit {
   public addExerciseForm: FormGroup;
-  public tempDate: Date = new Date(2022, 4, 5);
+  public date: Date;
+  public dateOpened: boolean = false;
 
   constructor(
+    private readonly exerciseService: ExerciseService,
     private readonly formBuilder: FormBuilder,
-    private readonly popoverController: PopoverController
+    private readonly popoverController: PopoverController,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -25,7 +32,26 @@ export class AddPage implements OnInit {
     return this.addExerciseForm.controls;
   }
 
-  public addExercise(): void {}
+  public addExercise(): void {
+    if (this.addExerciseForm.valid && this.date) {
+      const exercise: ExerciseDTO = {
+        name: this.addExerciseForm.get('name').value,
+        currentMinutes: this.addExerciseForm.get('currentMinutes').value,
+        currentSeconds: this.addExerciseForm.get('currentSeconds').value,
+        goalMinutes: this.addExerciseForm.get('goalMinutes').value,
+        goalSeconds: this.addExerciseForm.get('goalSeconds').value,
+        goalDate: this.date,
+        frequency: this.addExerciseForm.get('frequency').value,
+      };
+
+      this.exerciseService
+        .addExercise(exercise)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.router.navigate(['']);
+        });
+    }
+  }
 
   public async openDatePicker(): Promise<void> {
     const popover = await this.popoverController.create({
@@ -35,8 +61,10 @@ export class AddPage implements OnInit {
     popover.present();
 
     popover.onDidDismiss().then((data) => {
+      this.dateOpened = true;
       if (data) {
-        this.tempDate = data.data;
+        this.dateOpened = false;
+        this.date = data.data;
       }
     });
   }
@@ -60,7 +88,6 @@ export class AddPage implements OnInit {
         0,
         [Validators.required, Validators.max(59), Validators.min(0)],
       ],
-      goalDate: ['', [Validators.required]],
       frequency: ['', [Validators.required]],
     });
   }
