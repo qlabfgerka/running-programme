@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Exercise } from 'src/models/exercise/exercise.model';
+import { Plan } from 'src/models/plan/plan.model';
 import { User, UserDocument } from 'src/models/user/user.model';
 
 @Injectable()
@@ -30,6 +31,7 @@ export class DtoFunctionsService {
       goalSeconds: exercise.goalSeconds,
       name: exercise.name,
       user: await this.userToDTO(await this.getUser(exercise.user)),
+      plans: await this.plansToDTO(exercise.plans),
     };
 
     return exerciseDTO;
@@ -45,6 +47,25 @@ export class DtoFunctionsService {
     }
 
     return exercisesDTO;
+  }
+
+  public plansToDTO(plans: Array<Plan>): Array<Plan> {
+    const plansDTO = new Array<Plan>();
+
+    for (const plan of plans) {
+      plansDTO.push(this.planToDTO(plan));
+    }
+
+    return plansDTO;
+  }
+
+  public planToDTO(plan: Plan): Plan {
+    const planDTO: Plan = {
+      id: plan.id,
+      time: plan.time,
+      date: plan.date,
+    };
+    return planDTO;
   }
 
   private async getUser(user: User): Promise<User> {

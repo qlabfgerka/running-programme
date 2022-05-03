@@ -34,27 +34,21 @@
       <ion-text color="primary">{{exercise.goalDate| date:'longDate'}}</ion-text
       >.
     </div>
-    <ion-item-divider></ion-item-divider>
+    <ion-item-divider mode="md"></ion-item-divider>
 
+    <ion-button color="success" (click)="startExercise()">START</ion-button>
     <div class="break"></div>
     <ion-text color="secondary">
       <h3 class="center-text">Your upcoming trainings</h3>
     </ion-text>
     <ion-list>
-      <ion-item>
-        <ion-label>{{exercise.goalDate | date:'longDate'}}</ion-label>
-        <p>Goal: <ion-text color="secondary">1m 33s</ion-text></p>
-      </ion-item>
-      <ion-item>
-        <ion-label>{{exercise.goalDate | date:'longDate'}}</ion-label>
-        <p>Goal: <ion-text color="secondary">1m 30s</ion-text></p>
-      </ion-item>
-      <ion-item>
-        <ion-label>{{exercise.goalDate | date:'longDate'}}</ion-label>
-        <p>Goal: <ion-text color="secondary">1m 24s</ion-text></p>
+      <ion-item *ngFor="let plan of exercise.plans">
+        <ion-label>{{plan.date | date:'longDate'}}</ion-label>
+        <p>
+          Goal:
+          <ion-text color="secondary">{{plan.time | minuteSeconds }}</ion-text>
+        </p>
       </ion-item>
     </ion-list>
-
-    <ion-button color="success" (click)="startExercise()">START</ion-button>
   </div>
 </ion-content>

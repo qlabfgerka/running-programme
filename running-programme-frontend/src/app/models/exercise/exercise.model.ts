@@ -1,3 +1,4 @@
+import { PlanDTO } from '../plan/plan.model';
 import { UserDTO } from '../user/user.model';
 
 export class ExerciseDTO {
@@ -10,4 +11,5 @@ export class ExerciseDTO {
   goalSeconds: number | undefined | null = null;
   goalDate: Date | undefined | null = null;
   user?: UserDTO | undefined | null = null;
+  plans?: Array<PlanDTO> | undefined | null = null;
 }
