@@ -88,7 +88,10 @@ export class AddPage implements OnInit {
         0,
         [Validators.required, Validators.max(59), Validators.min(0)],
       ],
-      frequency: ['', [Validators.required]],
+      frequency: [
+        '',
+        [Validators.required, Validators.max(7), Validators.min(0)],
+      ],
     });
   }
 }
