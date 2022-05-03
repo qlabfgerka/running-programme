@@ -30,4 +30,44 @@ export class ExerciseService {
     const exercise = await this.exerciseModel.findById(id);
     return await this.dtoFunctions.exerciseToDTO(exercise);
   }
+
+  public async getExerciseDates(): Promise<void> {
+    const startDate: Date = new Date(2022, 1, 7);
+    const endDate: Date = new Date(2022, 1, 22);
+    const frequency: number = 5;
+
+    console.log(startDate);
+    console.log(endDate);
+    console.log(this.getNDates(startDate, endDate, frequency));
+  }
+
+  private getNDates(
+    startDate: Date,
+    endDate: Date,
+    frequency: number,
+  ): Array<Date> {
+    const dates: Array<Date> = new Array();
+    const days = [0, 1, 2, 3, 4, 5, 6];
+
+    for (let i = 0; i < 7 - frequency; i++) {
+      days.splice(this.generateRandomNumber(0, days.length - 1), 1);
+    }
+
+    dates.push(new Date(startDate));
+    startDate.setDate(startDate.getDate() + 1);
+    while (startDate < endDate) {
+      if (days.includes(startDate.getDay())) dates.push(new Date(startDate));
+
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    dates.push(endDate);
+
+    return dates;
+  }
+
+  private generateRandomNumber(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 }
