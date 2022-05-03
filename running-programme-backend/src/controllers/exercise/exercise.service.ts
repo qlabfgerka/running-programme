@@ -4,6 +4,8 @@ import { Exercise, ExerciseDocument } from 'src/models/exercise/exercise.model';
 import { User, UserDocument } from 'src/models/user/user.model';
 import { Model } from 'mongoose';
 import { DtoFunctionsService } from 'src/services/dto-functions/dto-functions.service';
+import { Plans } from 'src/models/plan/plans.model';
+import { Plan } from 'src/models/plan/plan.model';
 
 @Injectable()
 export class ExerciseService {
@@ -35,32 +37,31 @@ export class ExerciseService {
     const startDate: Date = new Date(2022, 1, 7);
     const endDate: Date = new Date(2022, 1, 22);
     const frequency: number = 5;
+    const plans: Plans = this.getNDates(startDate, endDate, frequency);
 
-    console.log(startDate);
-    console.log(endDate);
-    console.log(this.getNDates(startDate, endDate, frequency));
+    plans.plans.forEach((plan: Plan) => {
+      console.log(plan);
+    });
   }
 
-  private getNDates(
-    startDate: Date,
-    endDate: Date,
-    frequency: number,
-  ): Array<Date> {
-    const dates: Array<Date> = new Array();
+  private getNDates(startDate: Date, endDate: Date, frequency: number): Plans {
+    const dates: Plans = new Plans();
+    dates.plans = new Array<Plan>();
     const days = [0, 1, 2, 3, 4, 5, 6];
 
     for (let i = 0; i < 7 - frequency; i++) {
       days.splice(this.generateRandomNumber(0, days.length - 1), 1);
     }
 
-    dates.push(new Date(startDate));
+    dates.plans.push({ date: new Date(startDate), time: 0 });
     startDate.setDate(startDate.getDate() + 1);
     while (startDate < endDate) {
-      if (days.includes(startDate.getDay())) dates.push(new Date(startDate));
+      if (days.includes(startDate.getDay()))
+        dates.plans.push({ date: new Date(startDate), time: 0 });
 
       startDate.setDate(startDate.getDate() + 1);
     }
-    dates.push(endDate);
+    dates.plans.push({ date: endDate, time: 0 });
 
     return dates;
   }
