@@ -36,12 +36,22 @@ export class ExerciseService {
   public async getExerciseDates(): Promise<void> {
     const startDate: Date = new Date(2022, 1, 7);
     const endDate: Date = new Date(2022, 1, 22);
-    const frequency: number = 5;
+    const frequency: number = 3;
     const plans: Plans = this.getNDates(startDate, endDate, frequency);
 
-    plans.plans.forEach((plan: Plan) => {
-      console.log(plan);
-    });
+    plans.plans[0].time = 50;
+    plans.plans[plans.plans.length - 1].time = 25;
+
+    const x1 = 0;
+    const y1 = plans.plans[0].time;
+
+    const x2 = plans.plans.length - 1;
+    const y2 = plans.plans[x2].time;
+
+    for (let i = 1; i < plans.plans.length - 1; i++)
+      plans.plans[i].time = this.getValue((y2 - y1) / (x2 - x1), y1, i);
+
+    console.log(plans);
   }
 
   private getNDates(startDate: Date, endDate: Date, frequency: number): Plans {
@@ -70,5 +80,9 @@ export class ExerciseService {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  private getValue(slope: number, b: number, x: number): number {
+    return slope * x + b;
   }
 }
