@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation, Position } from '@capacitor/geolocation';
+import { mergeMap, take } from 'rxjs/operators';
+import { ExerciseDTO } from 'src/app/models/exercise/exercise.model';
+import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 
 @Component({
   selector: 'app-progress',
@@ -7,6 +11,8 @@ import { Geolocation, Position } from '@capacitor/geolocation';
   styleUrls: ['./progress.page.scss'],
 })
 export class ProgressPage implements OnInit, OnDestroy {
+  public isLoading: boolean;
+
   public speed: number;
   public totalRan: number = 0;
   public totalElapsed: number = 0;
@@ -16,15 +22,21 @@ export class ProgressPage implements OnInit, OnDestroy {
 
   private interval: any;
   private earthRadius: number = 6371000;
+  private next: number;
+  private exerciseId: string;
 
-  constructor() {}
+  constructor(
+    private readonly exerciseService: ExerciseService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
+  ) {}
 
   ngOnDestroy(): void {
     if (this.interval) clearInterval(this.interval);
   }
 
   ngOnInit(): void {
-    this.printCurrentPosition();
+    this.refresh();
   }
 
   public get goalSpeed(): number {
@@ -34,7 +46,15 @@ export class ProgressPage implements OnInit, OnDestroy {
     );
   }
 
-  public scanHeartbeat(): void {}
+  public finishExercise(): void {
+    if (this.interval) clearInterval(this.interval);
+
+    this.exerciseService
+      .finishExercise(this.exerciseId, this.next, this.totalElapsed)
+      .subscribe(() => {
+        this.router.navigate([`/view/${this.exerciseId}`]);
+      });
+  }
 
   private async printCurrentPosition(): Promise<void> {
     let previous: Position = await Geolocation.getCurrentPosition();
@@ -76,5 +96,26 @@ export class ProgressPage implements OnInit, OnDestroy {
 
   private calculateSpeed(distance: number, time: number): number {
     return (distance / time) * 3.6;
+  }
+
+  private refresh(): void {
+    this.isLoading = true;
+    this.route.paramMap
+      .pipe(
+        take(1),
+        mergeMap((paramMap) => {
+          this.next = +paramMap.get('next');
+          return this.exerciseService
+            .getExercise(paramMap.get('id'))
+            .pipe(take(1));
+        })
+      )
+      .subscribe((exercise: ExerciseDTO) => {
+        this.exerciseDistance = exercise.distance;
+        this.exerciseTime = exercise.plans[this.next].time;
+        this.exerciseId = exercise.id;
+        this.printCurrentPosition();
+        this.isLoading = false;
+      });
   }
 }

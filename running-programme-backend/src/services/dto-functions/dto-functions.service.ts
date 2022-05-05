@@ -30,6 +30,7 @@ export class DtoFunctionsService {
       goalMinutes: exercise.goalMinutes,
       goalSeconds: exercise.goalSeconds,
       name: exercise.name,
+      distance: exercise.distance,
       user: await this.userToDTO(await this.getUser(exercise.user)),
       plans: await this.plansToDTO(exercise.plans),
     };
@@ -64,6 +65,8 @@ export class DtoFunctionsService {
       id: plan.id,
       time: plan.time,
       date: plan.date,
+      completed: plan.completed,
+      timeSpent: plan.timeSpent,
     };
     return planDTO;
   }

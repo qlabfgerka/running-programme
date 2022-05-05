@@ -9,7 +9,7 @@ const routes: Routes = [
     component: ViewPage,
   },
   {
-    path: 'progress',
+    path: 'progress/:next',
     loadChildren: () =>
       import('./progress/progress.module').then((m) => m.ProgressPageModule),
   },

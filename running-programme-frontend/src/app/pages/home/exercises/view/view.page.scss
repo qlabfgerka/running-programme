@@ -1,3 +1,20 @@
 ion-list {
   width: 100%;
 }
+
+ion-item-divider {
+  margin-bottom: 1rem;
+}
+
+.completed {
+  color: var(--ion-color-success);
+}
+
+.upcoming {
+  color: var(--ion-color-danger);
+}
+
+.aside {
+  display: flex;
+  justify-content: space-between;
+}

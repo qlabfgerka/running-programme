@@ -7,10 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ViewPageRoutingModule } from './view-routing.module';
 
 import { ViewPage } from './view.page';
-import { MinuteSecondsPipe } from 'src/app/pipes/number-to-minutes/number-to-minutes.pipe';
+import { NumberToMinutesPipeModule } from 'src/app/pipes/number-to-minutes/number-to-minutes.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, ViewPageRoutingModule],
-  declarations: [ViewPage, MinuteSecondsPipe],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    ViewPageRoutingModule,
+    NumberToMinutesPipeModule,
+  ],
+  declarations: [ViewPage],
 })
 export class ViewPageModule {}

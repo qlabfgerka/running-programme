@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ProgressPageRoutingModule } from './progress-routing.module';
 
 import { ProgressPage } from './progress.page';
+import { NumberToMinutesPipeModule } from 'src/app/pipes/number-to-minutes/number-to-minutes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProgressPageRoutingModule
+    ProgressPageRoutingModule,
+    NumberToMinutesPipeModule,
   ],
-  declarations: [ProgressPage]
+  declarations: [ProgressPage],
 })
 export class ProgressPageModule {}

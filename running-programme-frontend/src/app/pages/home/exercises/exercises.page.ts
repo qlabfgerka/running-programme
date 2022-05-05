@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ViewWillEnter } from '@ionic/angular';
 import { take } from 'rxjs/operators';
 import { ExerciseDTO } from 'src/app/models/exercise/exercise.model';
 import { ExerciseService } from 'src/app/services/exercise/exercise.service';
@@ -9,7 +10,7 @@ import { ExerciseService } from 'src/app/services/exercise/exercise.service';
   templateUrl: './exercises.page.html',
   styleUrls: ['./exercises.page.scss'],
 })
-export class ExercisesPage implements OnInit {
+export class ExercisesPage implements OnInit, ViewWillEnter {
   public exercises: Array<ExerciseDTO>;
   public isLoading: boolean;
 
@@ -18,9 +19,11 @@ export class ExercisesPage implements OnInit {
     private readonly router: Router
   ) {}
 
-  ngOnInit(): void {
+  ionViewWillEnter(): void {
     this.refresh();
   }
+
+  ngOnInit(): void {}
 
   public addExercise(): void {
     this.router.navigate(['/add']);
