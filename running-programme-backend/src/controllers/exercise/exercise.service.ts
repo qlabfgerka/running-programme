@@ -33,6 +33,27 @@ export class ExerciseService {
     return await this.dtoFunctions.exerciseToDTO(exercise);
   }
 
+  public async getNextExercise(id: string): Promise<number> {
+    const exercise = await this.exerciseModel.findById(id);
+
+    return exercise.plans.findIndex((plan: Plan) => !plan.completed);
+  }
+
+  public async finishExercise(
+    id: string,
+    next: number,
+    time: number,
+  ): Promise<void> {
+    const exercise = await this.exerciseModel.findById(id);
+
+    exercise.plans[next].completed = true;
+    exercise.plans[next].timeSpent = time;
+
+    exercise.markModified('plans');
+
+    await exercise.save();
+  }
+
   public getExerciseDates(exercise: Exercise): Array<Plan> {
     const startDate: Date = new Date();
     const endDate: Date = new Date(exercise.goalDate);
@@ -70,15 +91,25 @@ export class ExerciseService {
       days.splice(this.generateRandomNumber(0, days.length - 1), 1);
     }
 
-    dates.push({ date: new Date(startDate), time: 0 });
+    dates.push({
+      date: new Date(startDate),
+      time: 0,
+      completed: false,
+      timeSpent: null,
+    });
     startDate.setDate(startDate.getDate() + 1);
     while (startDate < endDate) {
       if (days.includes(startDate.getDay()))
-        dates.push({ date: new Date(startDate), time: 0 });
+        dates.push({
+          date: new Date(startDate),
+          time: 0,
+          completed: false,
+          timeSpent: null,
+        });
 
       startDate.setDate(startDate.getDate() + 1);
     }
-    dates.push({ date: endDate, time: 0 });
+    dates.push({ date: endDate, time: 0, completed: false, timeSpent: null });
 
     return dates;
   }

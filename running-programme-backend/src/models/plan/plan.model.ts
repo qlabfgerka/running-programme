@@ -8,6 +8,12 @@ export class Plan {
 
   @Prop()
   time: number;
+
+  @Prop()
+  completed: boolean;
+
+  @Prop()
+  timeSpent: number;
 }
 
 export const PlanSchema = SchemaFactory.createForClass(Plan);

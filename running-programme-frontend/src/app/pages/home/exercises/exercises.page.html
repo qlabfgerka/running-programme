@@ -10,7 +10,7 @@
       *ngFor="let exercise of exercises"
       (click)="openExercise(exercise.id)"
     >
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>{{exercise.name}}</h2>
         <h3>
           Currently achieving
@@ -21,7 +21,8 @@
         <p>
           Expected to hit goal of
           <ion-text color="success"
-            >{{exercise.goalMinutes}}m {{exercise.goalSeconds}}</ion-text
+            >{{exercise.goalMinutes}}m {{exercise.goalSeconds | number :
+            '1.2-2'}}s</ion-text
           >
           by
           <ion-text color="primary">{{ exercise.goalDate| date}}</ion-text>

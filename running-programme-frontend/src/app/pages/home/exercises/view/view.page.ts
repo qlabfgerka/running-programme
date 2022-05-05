@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ViewWillEnter } from '@ionic/angular';
+import { forkJoin } from 'rxjs';
 import { take, mergeMap } from 'rxjs/operators';
 import { ExerciseDTO } from 'src/app/models/exercise/exercise.model';
 import { ExerciseService } from 'src/app/services/exercise/exercise.service';
@@ -9,9 +11,11 @@ import { ExerciseService } from 'src/app/services/exercise/exercise.service';
   templateUrl: './view.page.html',
   styleUrls: ['./view.page.scss'],
 })
-export class ViewPage implements OnInit {
+export class ViewPage implements OnInit, ViewWillEnter {
   public exercise: ExerciseDTO;
-  public isLoading: boolean;
+  public isLoading: boolean = true;
+
+  public next: number;
 
   constructor(
     private readonly exerciseService: ExerciseService,
@@ -19,12 +23,14 @@ export class ViewPage implements OnInit {
     private readonly route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  ionViewWillEnter(): void {
     this.refresh();
   }
 
+  ngOnInit(): void {}
+
   public startExercise(): void {
-    this.router.navigate(['view/temp/progress']);
+    this.router.navigate([`view/${this.exercise.id}/progress/${this.next}`]);
   }
 
   private refresh(): void {
@@ -33,11 +39,17 @@ export class ViewPage implements OnInit {
       .pipe(
         take(1),
         mergeMap((paramMap) =>
-          this.exerciseService.getExercise(paramMap.get('id')).pipe(take(1))
+          forkJoin([
+            this.exerciseService.getExercise(paramMap.get('id')).pipe(take(1)),
+            this.exerciseService
+              .getNextExercise(paramMap.get('id'))
+              .pipe(take(1)),
+          ])
         )
       )
-      .subscribe((exercise: ExerciseDTO) => {
-        this.exercise = exercise;
+      .subscribe((response) => {
+        this.exercise = response[0];
+        this.next = response[1];
         this.isLoading = false;
       });
   }

@@ -10,6 +10,7 @@ export class ExerciseDTO {
   goalMinutes: number | undefined | null = null;
   goalSeconds: number | undefined | null = null;
   goalDate: Date | undefined | null = null;
+  distance: number | undefined | null = null;
   user?: UserDTO | undefined | null = null;
   plans?: Array<PlanDTO> | undefined | null = null;
 }

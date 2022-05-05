@@ -31,6 +31,9 @@ export class Exercise {
   @Prop()
   goalDate: Date;
 
+  @Prop()
+  distance: number;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;
 

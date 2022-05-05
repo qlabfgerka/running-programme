@@ -35,4 +35,20 @@ export class ExerciseController {
   ): Promise<Exercise> {
     return await this.exerciseService.addExercise(exercise, req.user.id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('next/:id')
+  public async getNextExercise(@Param('id') id: string): Promise<number> {
+    return await this.exerciseService.getNextExercise(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/:next')
+  public async finishExercise(
+    @Param('id') id: string,
+    @Param('next') next: number,
+    @Body('time') time: number,
+  ): Promise<void> {
+    return await this.exerciseService.finishExercise(id, next, time);
+  }
 }

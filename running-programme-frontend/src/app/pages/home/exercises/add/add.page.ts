@@ -42,6 +42,7 @@ export class AddPage implements OnInit {
         goalSeconds: this.addExerciseForm.get('goalSeconds').value,
         goalDate: this.date,
         frequency: this.addExerciseForm.get('frequency').value,
+        distance: this.addExerciseForm.get('distance').value,
       };
 
       this.exerciseService
@@ -92,6 +93,7 @@ export class AddPage implements OnInit {
         '',
         [Validators.required, Validators.max(7), Validators.min(0)],
       ],
+      distance: ['', [Validators.required]],
     });
   }
 }

@@ -13,16 +13,22 @@
       <h1 class="center-text">{{exercise.name}}</h1>
     </ion-text>
 
-    <div class="flexbox">
+    <div class="flexbox padding">
       Currently achieving
       <ion-text color="primary">
-        &nbsp;{{exercise.currentMinutes}}m
-        {{exercise.currentSeconds}}s.</ion-text
-      >
+        <span *ngIf="next === 0"
+          >&nbsp;{{exercise.currentMinutes}}m {{exercise.currentSeconds |
+          number:'1.2-2'}}s.</span
+        >
+        <span *ngIf="next !== 0">
+          &nbsp;{{exercise.plans[next - 1].timeSpent | minuteSeconds}}
+        </span>
+      </ion-text>
 
       Expected to hit goal of
       <ion-text color="success">
-        &nbsp;{{exercise.goalMinutes}}m {{exercise.goalSeconds}}</ion-text
+        &nbsp;{{exercise.goalMinutes}}m {{exercise.goalSeconds |
+        number:'1.2-2'}}s</ion-text
       >
       &nbsp;by&nbsp;
       <ion-text color="primary">{{ exercise.goalDate| date}}.&nbsp;</ion-text>
@@ -42,12 +48,29 @@
       <h3 class="center-text">Your upcoming trainings</h3>
     </ion-text>
     <ion-list>
-      <ion-item *ngFor="let plan of exercise.plans">
-        <ion-label>{{plan.date | date:'longDate'}}</ion-label>
-        <p>
-          Goal:
-          <ion-text color="secondary">{{plan.time | minuteSeconds }}</ion-text>
-        </p>
+      <ion-item
+        *ngFor="let plan of exercise.plans; let i = index"
+        [ngClass]="{'upcoming': i === next, 'completed': i < next}"
+      >
+        <ion-label>
+          <div class="aside">
+            <h3>{{plan.date | date:'longDate'}}</h3>
+            <h3>
+              Goal:
+              <ion-text color="secondary"
+                >{{plan.time | minuteSeconds }}</ion-text
+              >
+            </h3>
+          </div>
+
+          <p *ngIf="plan.completed" slot="end">
+            Achieved time:
+            <ion-text
+              [color]="plan.timeSpent <= plan.time ? 'success' : 'danger'"
+              >{{plan.timeSpent | minuteSeconds}}</ion-text
+            >
+          </p></ion-label
+        >
       </ion-item>
     </ion-list>
   </div>

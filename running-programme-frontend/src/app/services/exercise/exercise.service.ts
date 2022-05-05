@@ -19,6 +19,21 @@ export class ExerciseService {
     return this.httpClient.get<ExerciseDTO>(`${this.hostname}/exercise/${id}`);
   }
 
+  public getNextExercise(id: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.hostname}/exercise/next/${id}`);
+  }
+
+  public finishExercise(
+    id: string,
+    next: number,
+    time: number
+  ): Observable<void> {
+    return this.httpClient.post<void>(
+      `${this.hostname}/exercise/${id}/${next}`,
+      { time }
+    );
+  }
+
   public addExercise(exercise: ExerciseDTO): Observable<ExerciseDTO> {
     return this.httpClient.post<ExerciseDTO>(
       `${this.hostname}/exercise`,

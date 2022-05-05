@@ -18,6 +18,17 @@
       *ngIf="this.addExerciseForm"
     >
       <ion-item>
+        <ion-label position="floating">Exercise distance</ion-label>
+        <ion-input formControlName="distance" type="text"></ion-input>
+      </ion-item>
+      <span
+        class="error"
+        *ngIf="errorControl.distance.touched && errorControl.distance.errors?.required"
+      >
+        Distance is required.
+      </span>
+
+      <ion-item>
         <ion-label position="floating">Exercise name</ion-label>
         <ion-input formControlName="name" type="text"></ion-input>
       </ion-item>

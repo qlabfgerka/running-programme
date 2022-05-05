@@ -8,13 +8,44 @@
   <div class="flexbox">
     <ion-text color="secondary">
       <h1 class="center-text">
-        Currently running <ion-text color="success">6km/h</ion-text>
-        <br />
-        Keep up the great pace!
+        Currently running
+        <ion-text [color]="speed < goalSpeed ? 'danger' : 'success'"
+          >{{speed ? (speed | number : '1.2-2') : (0 | number :
+          '1.2-2')}}km/h</ion-text
+        >
       </h1>
     </ion-text>
-    <ion-button color="success" (click)="scanHeartbeat()"
-      >SCAN FOR HEARTBEAT</ion-button
+
+    <p *ngIf="goalSpeed > 0">
+      Ideal speed: {{ goalSpeed | number : '1.2-2' }}km/h
+    </p>
+    <p *ngIf="goalSpeed <= 0">
+      <ion-text color="success">GOAL REACHED</ion-text>
+    </p>
+
+    <div class="break"></div>
+
+    <p>Exercise goal time: {{ exerciseTime | minuteSeconds }}</p>
+
+    <div class="break"></div>
+
+    <p>Time elapsed: {{ totalElapsed | minuteSeconds }}</p>
+
+    <div class="break"></div>
+
+    <p class="padding">
+      The running programme suggestion:
+      <br />
+      <ion-text [color]="speed < goalSpeed ? 'danger' : 'success' ">
+        {{ speed < goalSpeed ? "You should pick up the pace." : "Your tempo is"
+        +" fine." }}
+      </ion-text>
+    </p>
+
+    <div class="break"></div>
+
+    <ion-button color="success" (click)="finishExercise()"
+      >FINISH EXERCISE</ion-button
     >
   </div>
 </ion-content>
