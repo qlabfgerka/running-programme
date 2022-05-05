@@ -10,7 +10,8 @@
       <h1 class="center-text">
         Currently running
         <ion-text [color]="speed < goalSpeed ? 'danger' : 'success'"
-          >{{speed ? speed : 0 | number : '1.2-2'}}km/h</ion-text
+          >{{speed ? (speed | number : '1.2-2') : (0 | number :
+          '1.2-2')}}km/h</ion-text
         >
       </h1>
     </ion-text>
