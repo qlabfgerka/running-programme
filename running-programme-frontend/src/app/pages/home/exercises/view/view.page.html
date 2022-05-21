@@ -13,7 +13,7 @@
       <h1 class="center-text">{{exercise.name}}</h1>
     </ion-text>
 
-    <div class="flexbox padding">
+    <div class="flexbox padding" *ngIf="exercise.status === 'ongoing'">
       Currently achieving
       <ion-text color="primary">
         <span *ngIf="next === 0"
@@ -40,14 +40,53 @@
       <ion-text color="primary">{{exercise.goalDate| date:'longDate'}}</ion-text
       >.
     </div>
+
+    <div class="flexbox padding" *ngIf="exercise.status !== 'ongoing'">
+      Achieved
+      <ion-text color="primary">
+        <span *ngIf="next !== 0">
+          &nbsp;{{exercise.plans[next - 1].timeSpent | minuteSeconds}}
+        </span>
+        <span *ngIf="next === 0">
+          &nbsp;{{exercise.currentMinutes}}m {{exercise.currentSeconds | number
+          : '1.2-2'}}
+        </span>
+      </ion-text>
+
+      &nbsp;(goal was {{exercise.goalMinutes}}m {{exercise.goalSeconds | number
+      : '1.2-2'}}s) by
+      <ion-text color="success"> &nbsp;{{exercise.goalDate | date}}.</ion-text>
+
+      You were&nbsp;
+      <ion-text [color]="exercise.status === 'success' ? 'success' : 'danger'"
+        >{{ exercise.status === 'success' ? 'happy' : 'unhappy' }}</ion-text
+      >
+      &nbsp;with the results.
+    </div>
+
     <ion-item-divider mode="md"></ion-item-divider>
 
-    <ion-button color="success" (click)="startExercise()">START</ion-button>
+    <ion-button
+      color="success"
+      (click)="startExercise()"
+      *ngIf="exercise.status === 'ongoing' && this.remaining !== 0"
+      >START</ion-button
+    >
     <div class="break"></div>
     <ion-text color="secondary">
-      <h3 class="center-text">Your upcoming trainings</h3>
+      <h3 class="center-text" *ngIf="exercise.status === 'ongoing'">
+        Your upcoming trainings
+      </h3>
+      <h3 class="center-text" *ngIf="exercise.status !== 'ongoing'">
+        Your completed trainings
+      </h3>
     </ion-text>
-    <ion-list>
+
+    <h4 class="padding center-text" *ngIf="exercise.plans.length === 0">
+      It seems like there are no trainings for this exercise.
+    </h4>
+
+    <ion-list *ngIf="exercise.plans.length > 0">
       <ion-item
         *ngFor="let plan of exercise.plans; let i = index"
         [ngClass]="{'upcoming': i === next, 'completed': i < next}"

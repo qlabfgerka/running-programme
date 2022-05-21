@@ -34,6 +34,9 @@ export class Exercise {
   @Prop()
   distance: number;
 
+  @Prop()
+  status: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;
 

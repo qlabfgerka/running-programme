@@ -4,6 +4,8 @@ import { ViewWillEnter } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
 import { take, mergeMap } from 'rxjs/operators';
 import { ExerciseDTO } from 'src/app/models/exercise/exercise.model';
+import { StatusDTO } from 'src/app/models/exercise/status.model';
+import { PlanDTO } from 'src/app/models/plan/plan.model';
 import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 
 @Component({
@@ -14,6 +16,7 @@ import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 export class ViewPage implements OnInit, ViewWillEnter {
   public exercise: ExerciseDTO;
   public isLoading: boolean = true;
+  public remaining: number;
 
   public next: number;
 
@@ -51,6 +54,16 @@ export class ViewPage implements OnInit, ViewWillEnter {
         this.exercise = response[0];
         this.next = response[1];
         this.isLoading = false;
+        this.remaining = this.exercise.plans.filter(
+          (plan: PlanDTO) => !plan.completed
+        ).length;
+
+        this.next = this.next === -1 ? this.exercise.plans.length : this.next;
+
+        if (this.exercise.status !== StatusDTO.ongoing)
+          this.exercise.plans = this.exercise.plans.filter(
+            (plan: PlanDTO) => plan.completed
+          );
       });
   }
 }

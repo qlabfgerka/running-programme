@@ -31,6 +31,7 @@ export class DtoFunctionsService {
       goalSeconds: exercise.goalSeconds,
       name: exercise.name,
       distance: exercise.distance,
+      status: exercise.status,
       user: await this.userToDTO(await this.getUser(exercise.user)),
       plans: await this.plansToDTO(exercise.plans),
     };

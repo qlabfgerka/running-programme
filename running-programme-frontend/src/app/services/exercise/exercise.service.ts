@@ -23,6 +23,13 @@ export class ExerciseService {
     return this.httpClient.get<number>(`${this.hostname}/exercise/next/${id}`);
   }
 
+  public updateStatus(id: string, status: string): Observable<void> {
+    return this.httpClient.post<void>(
+      `${this.hostname}/exercise/update/${id}`,
+      { status }
+    );
+  }
+
   public finishExercise(
     id: string,
     next: number,

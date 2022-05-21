@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { take } from 'rxjs/operators';
 import { ExerciseDTO } from 'src/app/models/exercise/exercise.model';
+import { StatusDTO } from 'src/app/models/exercise/status.model';
 import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 import { TimeDialogComponent } from 'src/app/shared/components/dialogs/time-dialog/time-dialog.component';
 
@@ -41,6 +42,7 @@ export class AddPage implements OnInit {
         goalMinutes: this.addExerciseForm.get('goalMinutes').value,
         goalSeconds: this.addExerciseForm.get('goalSeconds').value,
         goalDate: this.date,
+        status: StatusDTO.ongoing,
         frequency: this.addExerciseForm.get('frequency').value,
         distance: this.addExerciseForm.get('distance').value,
       };

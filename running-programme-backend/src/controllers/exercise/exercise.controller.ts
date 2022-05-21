@@ -43,6 +43,15 @@ export class ExerciseController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('update/:id')
+  public async updateStatus(
+    @Param('id') id: string,
+    @Body('status') status: string,
+  ): Promise<void> {
+    return await this.exerciseService.updateStatus(id, status);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post(':id/:next')
   public async finishExercise(
     @Param('id') id: string,

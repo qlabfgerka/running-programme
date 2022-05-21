@@ -48,10 +48,23 @@ export class ExerciseService {
 
     exercise.plans[next].completed = true;
     exercise.plans[next].timeSpent = time;
+    exercise.plans[next].date = new Date();
 
     exercise.markModified('plans');
 
     await exercise.save();
+  }
+
+  public async updateStatus(id: string, status: string): Promise<void> {
+    const exercise = await this.exerciseModel.findById(id);
+
+    if (status === 'remove') {
+      await this.exerciseModel.remove(exercise);
+    } else {
+      exercise.status = status;
+
+      await exercise.save();
+    }
   }
 
   public getExerciseDates(exercise: Exercise): Array<Plan> {
